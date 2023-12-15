@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Configuration</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ecf0f1; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            background-color: #3498db; /* Blue sidebar color */
+            color: white;
+            padding: 20px;
+            min-width: 200px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            border: 1px solid #3498db; /* Blue border color */
+            border-radius: 5px;
+            margin-bottom: 10px;
+            color: white;
+            text-align: center;
+            transition: background-color 0.3s ease; /* Added transition effect */
+        }
+
+        .tab:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+        }
+
+        .tab.active {
+            background-color: #1c6c99; /* Darker blue for the active tab */
+        }
+
+        .tab-content {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="tab" onclick="showTab('tab1')" id="tab1" class="active"> Device Info </div>
+        <div class="tab" onclick="showTab('tab2')" id="tab2">WiFi Setting</div>
+        <div class="tab" onclick="showTab('tab3')" id="tab3"> No idea </div>
+        <div class="tab" onclick="showTab('tab4')" id="tab4"> Reboot </div>
+    </div>
+
+    <div id="tab1" class="tab-content">
+        <h2>Device Information</h2>
+        <p><strong>MAC Address:</strong> 12:34:56:78:90:AB</p>
+        <p><strong>Wi-Fi SSID:</strong> MyWiFiNetwork</p>
+        <p><strong>Password:</strong> MySecretPassword</p>
+    </div>
+
+    <div id="tab2" class="tab-content hidden">
+        <h2>WiFi Setting</h2>
+        <form id="config-form">
+            <label for="wifiMode">Wi-Fi Mode:</label>
+            <select id="wifiMode" name="wifiMode">
+                <option value="ap">Access Point (AP)</option>
+                <option value="station">Station</option>
+            </select>
+            <label for="ssid">Wi-Fi SSID:</label>
+            <input type="text" id="ssid" name="ssid" placeholder="Enter Wi-Fi SSID">
+            <label for="password">Wi-Fi Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter Wi-Fi Password">
+            <label for="dhcp">Use DHCP:</label>
+            <select id="dhcp" name="dhcp">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+            <label for="ipAddress">IP Address:</label>
+            <input type="text" id="ipAddress" name="ipAddress" placeholder="Enter IP Address">
+            <label for="subnetMask">Subnet Mask:</label>
+            <input type="text" id="subnetMask" name="subnetMask" placeholder="Enter Subnet Mask">
+            <button type="submit">Send WiFi Info</button>
+        </form>
+    </div>
+
+    <div id="tab3" class="tab-content hidden">
+        <h2>Future Contents</h2>
+        <!-- Content for Tab 3 -->
+        <p>Contents</p>
+    </div>
+
+    <div id="tab4" class="tab-content hidden">
+        <h2>Impotant Notice</h2>
+        <!-- Content for Tab 4 -->
+        <p>After reload factory Setting, all user's configuration will become to default.</p>
+        <p>Reboot will restart the device, any configuration will take effect after then.</p>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                if (tab.id === tabId) {
+                    tab.classList.remove('hidden');
+                    document.getElementById(tabId).classList.add('active');
+                } else {
+                    tab.classList.add('hidden');
+                    document.getElementById(tab.id).classList.remove('active');
+                }
+            });
+        }
+
+        var xhttp1 = new XMLHttpRequest();
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('config-form');
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const wifiMode = document.getElementById('wifiMode').value;
+                const ssid = document.getElementById('ssid').value;
+                const password = document.getElementById('password').value;
+                const dhcp = document.getElementById('dhcp').value;
+                const ipAddress = document.getElementById('ipAddress').value;
+                const subnetMask = document.getElementById('subnetMask').value;
+                var data = wifiMode + "/" + ssid + "/" + password + "/" + dhcp + "/" + ipAddress + "/" + subnetMask; 
+
+                xhttp1.open("POST", "/post", true);
+                xhttp1.send(data);
+            });
+        });
+    </script>
+</body>
+bug
+</html>

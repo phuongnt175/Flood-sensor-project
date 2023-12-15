@@ -1,0 +1,7 @@
+{
+    "idf.adapterTargetName": "esp32s3",
+    "idf.flashType": "UART",
+    "files.associations": {
+        "esp_wpa2.h": "c"
+    }
+}

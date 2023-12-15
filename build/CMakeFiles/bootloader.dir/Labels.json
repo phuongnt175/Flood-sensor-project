@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/CMakeFiles/bootloader"
+		},
+		{
+			"file" : "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/CMakeFiles/bootloader.rule"
+		},
+		{
+			"file" : "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/CMakeFiles/bootloader-complete.rule"
+		},
+		{
+			"file" : "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule"
+		},
+		{
+			"file" : "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule"
+		},
+		{
+			"file" : "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule"
+		},
+		{
+			"file" : "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule"
+		},
+		{
+			"file" : "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule"
+		},
+		{
+			"file" : "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule"
+		},
+		{
+			"file" : "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"bootloader"
+		],
+		"name" : "bootloader"
+	}
+}
