@@ -1,8 +1,8 @@
 {
     "project_name":       "bootloader",
     "project_path":       "/home/phuongnt/Matter/esp-idf/components/bootloader/subproject",
-    "build_dir":          "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader",
-    "config_file":        "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/sdkconfig",
+    "build_dir":          "/home/phuongnt/Flood_Project/build/bootloader",
+    "config_file":        "/home/phuongnt/Flood_Project/sdkconfig",
     "config_defaults":    "",
     "app_elf":            "bootloader.elf",
     "app_bin":            "bootloader.bin",

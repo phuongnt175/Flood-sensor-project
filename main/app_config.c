@@ -86,6 +86,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
     }
 }
 
+
 bool is_provisioned(void)
 {
     bool provisioned = false;
@@ -189,17 +190,17 @@ void app_config(void)
 
             wifi_config_t wifi_config;
             bzero(&wifi_config, sizeof(wifi_config_t));
-            if (wifiMode == 'station')
+            if (strcmp(wifiMode, "station") == 0)
             {
                 memcpy(wifi_config.sta.ssid, ssid, strlen(ssid));
-                memcpy(wifi_config.sta.password, password, strlen(password)); .
+                memcpy(wifi_config.sta.password, password, strlen(password));
                 wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
                 ESP_ERROR_CHECK(esp_wifi_init(&cfg));
                 ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
                 ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
                 ESP_ERROR_CHECK(esp_wifi_start());
             }
-            else if(wifiMode == 'ap')
+            else if(strcmp(wifiMode, "ap") == 0)
             {
                 memcpy(wifi_config.sta.ssid, ssid, strlen(ssid));
                 memcpy(wifi_config.sta.password, password, strlen(password));

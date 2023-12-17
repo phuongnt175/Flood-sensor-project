@@ -19,6 +19,56 @@ static httpd_handle_t server = NULL;
 
 static http_post_handle_t http_post_cb = NULL;
 
+static esp_err_t sys_info_handler(httpd_req_t *req)
+{
+    uint8_t mac[6];
+    esp_read_mac(mac, ESP_MAC_WIFI_STA);
+    snprintf(deviceInfo.macAddress, sizeof(deviceInfo.macAddress), "%02X:%02X:%02X:%02X:%02X:%02X",
+             mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+
+    // Get module version
+    snprintf(deviceInfo.moduleVersion, sizeof(deviceInfo.moduleVersion), "%s", esp_get_idf_version());
+
+    // Get Wi-Fi mode
+    wifi_mode_t mode;
+    esp_wifi_get_mode(&mode);
+    snprintf(deviceInfo.wifiMode, sizeof(deviceInfo.wifiMode), "%s", (mode == WIFI_MODE_AP) ? "AP" : "Station");
+
+    // Get AP SSID and IP (assuming in AP mode)
+    if (mode == WIFI_MODE_AP) {
+        wifi_config_t ap_config;
+        esp_wifi_get_config(WIFI_IF_AP, &ap_config);
+        snprintf(deviceInfo.apSsid, sizeof(deviceInfo.apSsid), "%s", (char *)ap_config.ap.ssid);
+        tcpip_adapter_ip_info_t ap_ip_info;
+        tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_AP, &ap_ip_info);
+        snprintf(deviceInfo.apIp, sizeof(deviceInfo.apIp), IPSTR, IP2STR(&ap_ip_info.ip));
+    }
+
+    // Create JSON response
+    char json_response[1024];
+    snprintf(json_response, sizeof(json_response),
+             "{"
+             "\"macAddress\":\"%s\","
+             "\"moduleVersion\":\"%s\","
+             "\"wifiMode\":\"%s\","
+             "\"apSsid\":\"%s\","
+             "\"apIp\":\"%s\""
+             "}",
+             deviceInfo.macAddress, deviceInfo.moduleVersion, deviceInfo.wifiMode,
+             deviceInfo.apSsid, deviceInfo.apIp);
+
+    httpd_resp_set_type(req, "application/json");
+    httpd_resp_send(req, json_response, strlen(json_response));
+    return ESP_OK;
+}
+
+static const httpd_uri_t sys_info = {
+    .uri = "/sysinfo",
+    .method = HTTP_GET,
+    .handler = sys_info_handler,
+    .user_ctx = "hello word"
+};
+
 /* An HTTP GET handler */
 static esp_err_t root_handler(httpd_req_t *req)
 {
@@ -76,6 +126,7 @@ void start_webserver(void)
         ESP_LOGI(TAG, "Registering URI handlers");
         httpd_register_uri_handler(server, &root);
         httpd_register_uri_handler(server, &http_post);
+        httpd_register_uri_handler(server, &sys_info);
     }
 }
 

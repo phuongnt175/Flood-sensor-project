@@ -6,9 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Device Configuration</title>
     <style>
+        hr {
+            border: 1px solid white; /* Set the border color to white */
+            margin: 20px 0; /* Add some margin above and below the horizontal rule */
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ecf0f1; /* Light gray background */
+            background-color: #ecf0f1;
+            /* Light gray background */
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -17,43 +23,40 @@
         }
 
         .sidebar {
-            background-color: #3498db; /* Blue sidebar color */
-            color: white;
-            padding: 20px;
-            min-width: 200px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            min-width: auto;
+            margin-top: 100px;
         }
 
         .tab {
             padding: 10px 20px;
             margin: 0 5px;
             cursor: pointer;
-            border: 1px solid #3498db; /* Blue border color */
-            border-radius: 5px;
             margin-bottom: 10px;
-            color: white;
+            color: black;
             text-align: center;
-            transition: background-color 0.3s ease; /* Added transition effect */
-        }
-
-        .tab:hover {
-            background-color: #2980b9; /* Darker blue on hover */
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+            /* Added transition effect */
         }
 
         .tab.active {
-            background-color: #1c6c99; /* Darker blue for the active tab */
+            background-color: #3498db;
+            /* Darker blue for the active tab */
+            border-color: #1c6c99;
+            /* Darker blue border for the active tab */
         }
 
         .tab-content {
             max-width: 600px;
             width: 100%;
             padding: 20px;
-            background-color: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
+            background-color: #3498db;
+            /* Set background color for tabs */
+            color: white;
+            /* Set text color for tabs */
         }
 
         .hidden {
@@ -63,24 +66,45 @@
         label {
             display: block;
             margin-top: 10px;
+            margin-bottom: 5px; /* Adjust the bottom margin as needed */
+            color: white; /* Set label color to match tab text color */
         }
 
         input,
         select {
-            width: 100%;
+            width: 30%;
             padding: 8px;
             margin-top: 5px;
             box-sizing: border-box;
+            margin-left: auto;
         }
 
+        /* Flex container for label and input elements */
+        .flex-container {
+            display: flex;
+            justify-content: 50px;
+            align-items: center;
+        }
+
+        /* Style for MAC Address */
+        .device-info {
+        display: inline-block;
+        margin-left: auto; /* This will align the text to the right */
+        }
+
+
         button {
-            background-color: #4CAF50;
-            color: white;
+            background-color: white;
+            color: #3498db;
             padding: 10px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 20px;
+            margin-left: auto;
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
         }
 
         button:hover {
@@ -91,41 +115,69 @@
 
 <body>
     <div class="sidebar">
-        <div class="tab" onclick="showTab('tab1')" id="tab1" class="active"> Device Info </div>
-        <div class="tab" onclick="showTab('tab2')" id="tab2">WiFi Setting</div>
+        <div class="tab" onclick="showTab('tab1')" id="tab1"> Device Info </div>
+        <div class="tab" onclick="showTab('tab2')" id="tab2"> WiFi Setting </div>
         <div class="tab" onclick="showTab('tab3')" id="tab3"> No idea </div>
         <div class="tab" onclick="showTab('tab4')" id="tab4"> Reboot </div>
     </div>
 
     <div id="tab1" class="tab-content">
         <h2>Device Information</h2>
-        <p><strong>MAC Address:</strong> 12:34:56:78:90:AB</p>
-        <p><strong>Wi-Fi SSID:</strong> MyWiFiNetwork</p>
-        <p><strong>Password:</strong> MySecretPassword</p>
-    </div>
+        <div class="flex-container">
+            <p><strong>MAC Address:</strong> <span class="device-info" id="mac-address">reading</span></p>
+        </div>
+        <div class="flex-container">
+            <p><strong>Module Version:</strong> <span class="device-info" id="module-version">reading</span></p>
+        </div>
+        <div class="flex-container">
+            <p><strong>WiFi Mode:</strong> <span class="device-info" id="wifi-mode">reading</span></p>
+        </div>
+        <div class="flex-container">
+            <p><strong>AP SSID:</strong> <span class="device-info" id="ap-ssid">reading</span></p>
+        </div>
+        <div class="flex-container">
+            <p><strong>AP IP:</strong> <span class="device-info" id="ap-ip">reading</span></p>
+        </div>
+    </div> 
 
     <div id="tab2" class="tab-content hidden">
-        <h2>WiFi Setting</h2>
+        <h2>WIFI Set</h2><hr>
         <form id="config-form">
-            <label for="wifiMode">Wi-Fi Mode:</label>
-            <select id="wifiMode" name="wifiMode">
-                <option value="ap">Access Point (AP)</option>
-                <option value="station">Station</option>
-            </select>
-            <label for="ssid">Wi-Fi SSID:</label>
-            <input type="text" id="ssid" name="ssid" placeholder="Enter Wi-Fi SSID">
-            <label for="password">Wi-Fi Password:</label>
-            <input type="password" id="password" name="password" placeholder="Enter Wi-Fi Password">
-            <label for="dhcp">Use DHCP:</label>
-            <select id="dhcp" name="dhcp">
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-            </select>
-            <label for="ipAddress">IP Address:</label>
-            <input type="text" id="ipAddress" name="ipAddress" placeholder="Enter IP Address">
-            <label for="subnetMask">Subnet Mask:</label>
-            <input type="text" id="subnetMask" name="subnetMask" placeholder="Enter Subnet Mask">
-            <button type="submit">Send WiFi Info</button>
+            <!-- Flex container for label and select elements with margin-bottom -->
+            <div class="flex-container">
+                <label for="wifiMode">Wi-Fi Role:</label>
+                <select id="wifiMode" name="wifiMode">
+                    <option value="ap">Access Point (AP)</option>
+                    <option value="station">Station</option>
+                </select>
+            </div>
+
+            <h2>AP Set</h2><hr>
+            <!-- Flex container for label and input elements with margin-bottom -->
+            <div class="flex-container">
+                <label for="ssid">Wi-Fi SSID:</label>
+                <input type="text" id="ssid" name="ssid" placeholder="Enter Wi-Fi SSID">
+            </div>
+            <div class="flex-container">
+                <label for="password">Wi-Fi Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter Wi-Fi Password">
+            </div>
+            <div class="flex-container">
+                <label for="dhcp">Use DHCP:</label>
+                <select id="dhcp" name="dhcp">
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+            <div class="flex-container">
+                <label for="ipAddress">IP Address:</label>
+                <input type="text" id="ipAddress" name="ipAddress" placeholder="Enter IP Address">
+            </div>
+            <div class="flex-container">
+                <label for="subnetMask">Subnet Mask:</label>
+                <input type="text" id="subnetMask" name="subnetMask" placeholder="Enter Subnet Mask">
+            </div>
+            <button type="submit">SAVE</button>
         </form>
     </div>
 
@@ -136,27 +188,37 @@
     </div>
 
     <div id="tab4" class="tab-content hidden">
-        <h2>Impotant Notice</h2>
+        <h2>Important Notice</h2>
         <!-- Content for Tab 4 -->
-        <p>After reload factory Setting, all user's configuration will become to default.</p>
-        <p>Reboot will restart the device, any configuration will take effect after then.</p>
+        <p>After reloading factory settings, all user's configurations will become default.</p>
+        <p>Reboot will restart the device, and any configuration will take effect afterward.</p>
     </div>
 
     <script>
         function showTab(tabId) {
             const tabs = document.querySelectorAll('.tab-content');
+            const tabButtons = document.querySelectorAll('.tab');
+
             tabs.forEach(tab => {
                 if (tab.id === tabId) {
                     tab.classList.remove('hidden');
-                    document.getElementById(tabId).classList.add('active');
                 } else {
                     tab.classList.add('hidden');
-                    document.getElementById(tab.id).classList.remove('active');
+                }
+            });
+
+            tabButtons.forEach(button => {
+                if (button.id === tabId) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
                 }
             });
         }
 
         var xhttp1 = new XMLHttpRequest();
+        var xhttp2 = new XMLHttpRequest();
+
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('config-form');
 
@@ -175,7 +237,38 @@
                 xhttp1.send(data);
             });
         });
+
+        xhttp2.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const responseObj = JSON.parse(this.responseText);
+            
+                // Update MAC Address
+                const macAddressElement = document.getElementById("mac-address");
+                macAddressElement.innerText = responseObj.macAddress;
+
+                // Update Module Version
+                const moduleVersionElement = document.getElementById("module-version");
+                moduleVersionElement.innerText = responseObj.moduleVersion;
+
+                // Update WiFi Mode
+                const wifiModeElement = document.getElementById("wifi-mode");
+                wifiModeElement.innerText = responseObj.wifiMode;
+
+                // Update AP SSID
+                const apSsidElement = document.getElementById("ap-ssid");
+                apSsidElement.innerText = responseObj.apSsid;
+
+                // Update AP IP
+                const apIpElement = document.getElementById("ap-ip");
+                apIpElement.innerText = responseObj.apIp;
+            }
+        };
+
+        setInterval(function () {
+            xhttp2.open("GET", "/sysinfo", true);
+            xhttp2.send();
+        }, 1000); // Adjust the interval as needed
     </script>
 </body>
-bug
+
 </html>

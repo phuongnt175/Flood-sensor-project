@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/esp-idf/soc/esp32s3/cmake_install.cmake")
+  include("/home/phuongnt/Flood_Project/build/esp-idf/soc/esp32s3/cmake_install.cmake")
 
 endif()
 

@@ -1605,7 +1605,7 @@ rule C_STATIC_LIBRARY_LINKER____idf_main_
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /usr/bin/cmake --regenerate-during-build -S/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver -B/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build
+  command = /usr/bin/cmake --regenerate-during-build -S/home/phuongnt/Flood_Project -B/home/phuongnt/Flood_Project/build
   description = Re-running CMake...
   generator = 1
 

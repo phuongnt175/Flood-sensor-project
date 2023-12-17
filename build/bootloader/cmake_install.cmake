@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader/esp-idf/cmake_install.cmake")
+  include("/home/phuongnt/Flood_Project/build/bootloader/esp-idf/cmake_install.cmake")
 
 endif()
 
@@ -51,5 +51,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/phuongnt/Flood_Project/build/bootloader/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

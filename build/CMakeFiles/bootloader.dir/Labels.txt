@@ -1,13 +1,13 @@
 # Target labels
  bootloader
 # Source files and their labels
-/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/CMakeFiles/bootloader
-/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/CMakeFiles/bootloader.rule
-/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/CMakeFiles/bootloader-complete.rule
-/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
-/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
-/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
-/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
-/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
-/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
-/home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
+/home/phuongnt/Flood_Project/build/CMakeFiles/bootloader
+/home/phuongnt/Flood_Project/build/CMakeFiles/bootloader.rule
+/home/phuongnt/Flood_Project/build/CMakeFiles/bootloader-complete.rule
+/home/phuongnt/Flood_Project/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/home/phuongnt/Flood_Project/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/phuongnt/Flood_Project/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/phuongnt/Flood_Project/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/phuongnt/Flood_Project/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/phuongnt/Flood_Project/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/phuongnt/Flood_Project/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule

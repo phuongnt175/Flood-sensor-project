@@ -1,4 +1,4 @@
-/* * Data converted from /home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from /home/phuongnt/Flood_Project/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 .section .rodata.embedded

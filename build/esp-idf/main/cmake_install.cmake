@@ -1,4 +1,4 @@
-# Install script for directory: /home/phuongnt/Downloads/codeESP32/10smartconfig_webserver/main
+# Install script for directory: /home/phuongnt/Flood_Project/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
