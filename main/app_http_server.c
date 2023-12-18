@@ -7,6 +7,7 @@
 #include "esp_netif.h"
 #include <esp_http_server.h>
 #include <string.h>
+#include <esp_mac.h>
 
 /* A simple example that demonstrates how to create GET and POST
  * handlers for the web server.
