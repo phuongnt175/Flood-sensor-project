@@ -7,7 +7,7 @@
 #include "esp_netif.h"
 #include <esp_http_server.h>
 #include <string.h>
-#include <esp_mac.h>
+
 
 /* A simple example that demonstrates how to create GET and POST
  * handlers for the web server.
@@ -53,10 +53,16 @@ static esp_err_t sys_info_handler(httpd_req_t *req)
              "\"moduleVersion\":\"%s\","
              "\"wifiMode\":\"%s\","
              "\"apSsid\":\"%s\","
-             "\"apIp\":\"%s\""
+             "\"apIp\":\"%s\","
+             "\"staDHCP\":\"%s\","
+             "\"staIp\":\"%s\","
+             "\"staSubMask\":\"%s\","
+             "\"staGateway\":\"%s\","
+             "\"staDNS\":\"%s\""
              "}",
              deviceInfo.macAddress, deviceInfo.moduleVersion, deviceInfo.wifiMode,
-             deviceInfo.apSsid, deviceInfo.apIp);
+             deviceInfo.apSsid, deviceInfo.apIp, deviceInfo.staDHCP, deviceInfo.staIP
+             , deviceInfo.staSubMask, deviceInfo.staGateway,deviceInfo.staDNS);
 
     httpd_resp_set_type(req, "application/json");
     httpd_resp_send(req, json_response, strlen(json_response));
@@ -85,7 +91,7 @@ static esp_err_t root_handler(httpd_req_t *req)
 }
 
 static const httpd_uri_t root = {
-    .uri = "/index",
+    .uri = "/",
     .method = HTTP_GET,
     .handler = root_handler,
     /* Let's pass response string in user

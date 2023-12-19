@@ -86,7 +86,6 @@ static void event_handler(void* arg, esp_event_base_t event_base,
     }
 }
 
-
 bool is_provisioned(void)
 {
     bool provisioned = false;
@@ -185,7 +184,7 @@ void app_config(void)
             http_post_set_callback(http_post_data_callback);
             xEventGroupWaitBits(s_wifi_event_group , HTTP_CONFIG_DONE, false, true, portMAX_DELAY); 
 
-            // convert station mode and connect router chuyển
+            // convert station mode and connect router
             stop_webserver();
 
             wifi_config_t wifi_config;

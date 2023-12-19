@@ -1,15 +1,18 @@
 #ifndef __APP_HTTP_SERVER_H
 #define __APP_HTTP_SERVER_H
 
-#include <stdbool.h>
-
-// Structure to hold device information
 typedef struct {
     char macAddress[18];
     char moduleVersion[20];
     char wifiMode[10];
     char apSsid[32];
     char apIp[16];
+    char apChan[10];
+    char staDHCP[16];
+    char staIP[16];
+    char staSubMask[20];
+    char staGateway[20];
+    char staDNS[20];
 } DeviceInfo;
 
 DeviceInfo deviceInfo;

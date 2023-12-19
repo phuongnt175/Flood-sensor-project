@@ -82,8 +82,15 @@
         /* Flex container for label and input elements */
         .flex-container {
             display: flex;
-            justify-content: 50px;
+            justify-content: 0px;
             align-items: center;
+            padding: 0;
+        }
+        
+        .flex-container2 {
+            max-width: 600px;
+            width: 100%;
+            padding: 0; /* Set padding to zero */
         }
 
         /* Style for MAC Address */
@@ -115,28 +122,45 @@
 
 <body>
     <div class="sidebar">
-        <div class="tab" onclick="showTab('tab1')" id="tab1"> Device Info </div>
+        <div class="tab" onclick="showTab('tab1')" id="tab1"> Sys Status </div>
         <div class="tab" onclick="showTab('tab2')" id="tab2"> WiFi Setting </div>
-        <div class="tab" onclick="showTab('tab3')" id="tab3"> No idea </div>
-        <div class="tab" onclick="showTab('tab4')" id="tab4"> Reboot </div>
+        <div class="tab" onclick="showTab('tab3')" id="tab3"> Reboot </div>
     </div>
 
     <div id="tab1" class="tab-content">
-        <h2>Device Information</h2>
-        <div class="flex-container">
-            <p><strong>MAC Address:</strong> <span class="device-info" id="mac-address">reading</span></p>
+        <h2>System Status</h2><hr>
+        <div class="flex-container2">
+            <p><strong>Module MAC:</strong> <span class="device-info" id="mac-address">..........</span></p>
         </div>
-        <div class="flex-container">
-            <p><strong>Module Version:</strong> <span class="device-info" id="module-version">reading</span></p>
+        <div class="flex-container2">
+            <p><strong>Module Version:</strong> <span class="device-info" id="module-version">..........</span></p>
         </div>
-        <div class="flex-container">
-            <p><strong>WiFi Mode:</strong> <span class="device-info" id="wifi-mode">reading</span></p>
+        <h2>WiFi Status</h2><hr>
+        <div class="flex-container2">
+            <p><strong>WiFi Mode:</strong> <span class="device-info" id="wifi-mode">..........</span></p>
         </div>
-        <div class="flex-container">
-            <p><strong>AP SSID:</strong> <span class="device-info" id="ap-ssid">reading</span></p>
+        <h2>AP Status</h2><hr>
+        <div class="flex-container2">
+            <p><strong>AP SSID:</strong> <span class="device-info" id="ap-ssid">..........</span></p>
         </div>
-        <div class="flex-container">
-            <p><strong>AP IP:</strong> <span class="device-info" id="ap-ip">reading</span></p>
+        <div class="flex-container2">
+            <p><strong>AP IP:</strong> <span class="device-info" id="ap-ip">..........</span></p>
+        </div>
+        <h2>Station Status</h2><hr>
+        <div class="flex-container2">
+            <p><strong>Station DHCP:</strong> <span class="device-info" id="sta-status">..........</span></p>
+        </div>
+        <div class="flex-container2">
+            <p><strong>Station IP:</strong> <span class="device-info" id="sta-ip">..........</span></p>
+        </div>
+        <div class="flex-container2">
+            <p><strong>Station Subnet Mask:</strong> <span class="device-info" id="sta-submask">..........</span></p>
+        </div>
+        <div class="flex-container2">
+            <p><strong>Station Gateway:</strong> <span class="device-info" id="sta-gateway">..........</span></p>
+        </div>
+        <div class="flex-container2">
+            <p><strong>Station DNS:</strong> <span class="device-info" id="sta-dns">..........</span></p>
         </div>
     </div> 
 
@@ -155,12 +179,21 @@
             <h2>AP Set</h2><hr>
             <!-- Flex container for label and input elements with margin-bottom -->
             <div class="flex-container">
-                <label for="ssid">Wi-Fi SSID:</label>
-                <input type="text" id="ssid" name="ssid" placeholder="Enter Wi-Fi SSID">
+                <label for="ssid">SSID:</label>
+                <input type="text" id="ap-ssid" name="ssid" placeholder=" ">
             </div>
             <div class="flex-container">
-                <label for="password">Wi-Fi Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter Wi-Fi Password">
+                <label for="password">Password:</label>
+                <input type="password" id="ap-pass" name="ap-pass" placeholder=" ">
+            </div>
+            <h2>Station Set</h2><hr>
+            <div class="flex-container">
+                <label for="ssid">SSID:</label>
+                <input type="text" id="sta-ssid" name="sta-ssid" placeholder=" ">
+            </div>
+            <div class="flex-container">
+                <label for="ssid">Password:</label>
+                <input type="password" id="sta-pass" name="sta-pass" placeholder=" ">
             </div>
             <div class="flex-container">
                 <label for="dhcp">Use DHCP:</label>
@@ -171,25 +204,26 @@
             </div>
             <div class="flex-container">
                 <label for="ipAddress">IP Address:</label>
-                <input type="text" id="ipAddress" name="ipAddress" placeholder="Enter IP Address">
+                <input type="text" id="ipAddress" name="ipAddress" placeholder=" ">
             </div>
             <div class="flex-container">
                 <label for="subnetMask">Subnet Mask:</label>
-                <input type="text" id="subnetMask" name="subnetMask" placeholder="Enter Subnet Mask">
+                <input type="text" id="subnetMask" name="subnetMask" placeholder=" ">
+            </div>
+            <div class="flex-container">
+                <label for="Gateway">Gateway:</label>
+                <input type="text" id="Gateway" name="Gateway" placeholder=" ">
+            </div>
+            <div class="flex-container">
+                <label for="DNS">DNS:</label>
+                <input type="text" id="DNS" name="DNS" placeholder=" "> 
             </div>
             <button type="submit">SAVE</button>
         </form>
     </div>
-
     <div id="tab3" class="tab-content hidden">
-        <h2>Future Contents</h2>
-        <!-- Content for Tab 3 -->
-        <p>Contents</p>
-    </div>
-
-    <div id="tab4" class="tab-content hidden">
         <h2>Important Notice</h2>
-        <!-- Content for Tab 4 -->
+        <!-- Content for Tab 3 -->
         <p>After reloading factory settings, all user's configurations will become default.</p>
         <p>Reboot will restart the device, and any configuration will take effect afterward.</p>
     </div>
@@ -215,6 +249,7 @@
                 }
             });
         }
+        
 
         var xhttp1 = new XMLHttpRequest();
         var xhttp2 = new XMLHttpRequest();
@@ -225,13 +260,17 @@
             form.addEventListener('submit', function (event) {
                 event.preventDefault();
 
-                const wifiMode = document.getElementById('wifiMode').value;
-                const ssid = document.getElementById('ssid').value;
-                const password = document.getElementById('password').value;
-                const dhcp = document.getElementById('dhcp').value;
-                const ipAddress = document.getElementById('ipAddress').value;
-                const subnetMask = document.getElementById('subnetMask').value;
-                var data = wifiMode + "/" + ssid + "/" + password + "/" + dhcp + "/" + ipAddress + "/" + subnetMask; 
+                var wifiMode = document.getElementById('wifiMode').value;
+                var apSsid = document.getElementById('ap-ssid').value;
+                var apPass = document.getElementById('ap-pass').value;
+                var staSsid = document.getElementById('sta-ssid').value;
+                var staPass = document.getElementById('sta-pass').value;
+                var dhcp = document.getElementById('dhcp').value;
+                var ipAddress = document.getElementById('ipAddress').value;
+                var subnetMask = document.getElementById('subnetMask').value;
+                var Gateway = document.getElementById('Gateway').value;
+                var DNS = document.getElementById('DNS').value;
+                var data = wifiMode + "/" + apSsid + "/" + apPass + "/" + staSsid + "/" + staPass + "/" + dhcp + "/" + ipAddress + "/" + subnetMask + "/" + Gateway + "/" + DNS;
 
                 xhttp1.open("POST", "/post", true);
                 xhttp1.send(data);
@@ -261,6 +300,26 @@
                 // Update AP IP
                 const apIpElement = document.getElementById("ap-ip");
                 apIpElement.innerText = responseObj.apIp;
+
+                // Update station DHCP status
+                const staDHCPElement = document.getElementById("sta-status");
+                staDHCPElement.innerText = responseObj.staDHCP;
+
+                // Update station IP
+                const staIpElement = document.getElementById("sta-ip");
+                staIpElement.innerText = responseObj.staIp;
+
+                // Update station SubnetMask
+                const staSubMaskElement = document.getElementById("sta-submask");
+                staSubMaskElement.innerText = responseObj.staSubMask;
+
+                // Update AP IP
+                const staGatewayElement = document.getElementById("sta-gateway");
+                staGatewayElement.innerText = responseObj.staGateway;
+
+                // Update AP IP
+                const staDNSElement = document.getElementById("sta-dns");
+                staDNSElement.innerText = responseObj.staDNS;
             }
         };
 
