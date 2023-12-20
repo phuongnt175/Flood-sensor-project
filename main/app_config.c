@@ -18,6 +18,7 @@
 #include "lwip/sys.h"
 
 #include "app_http_server.h"
+#include "cJSON.h"
 
 static char * TAG = "CONFIG_WIFI";
 
@@ -28,6 +29,41 @@ static EventGroupHandle_t s_wifi_event_group;
 static const int WIFI_CONNECTED_BIT = BIT0;
 static const int ESPTOUCH_DONE_BIT = BIT1;
 static const int HTTP_CONFIG_DONE = BIT2;
+
+char wifiMode[10] = {0};
+char apSsid[65] = {0};
+char apPass[65] = {0};
+char staSsid[65] = {0};
+char staPass[65] = {0};
+char dhcp[10] = {0};
+char ipAddress[20] = {0};
+char subnetMask[20] = {0};
+char Gateway[20] = {0};
+char DNS[20] = {0};
+
+esp_err_t set_sta_static_ip(const char *ip) {
+    tcpip_adapter_ip_info_t ip_info;
+
+    // Parse IP address, netmask, gateway, and DNS
+    ip4addr_aton(ip, &ip_info.ip);
+
+    // Stop DHCP client
+    esp_err_t ret = tcpip_adapter_dhcpc_stop(TCPIP_ADAPTER_IF_STA);
+    if (ret != ESP_OK) {
+        printf("Failed to stop DHCP client\n");
+        return ret;
+    }
+
+    // Set static IP configuration
+    ret = tcpip_adapter_set_ip_info(TCPIP_ADAPTER_IF_STA, &ip_info);
+    if (ret != ESP_OK) {
+        printf("Failed to set static IP configuration\n");
+        return ret;
+    }
+
+    printf("STA IP configuration set successfully\n");
+    return ESP_OK;
+}
 
 static void event_handler(void* arg, esp_event_base_t event_base, 
                                 int32_t event_id, void* event_data)
@@ -125,35 +161,48 @@ void ap_start(void)
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
 }
-char wifiMode[10] = {0};
-char ssid[33] = {0};
-char password[65] = {0};
-char dhcp[10] = {0};
-char ipAddress[20] = {0};
-char subnetMask[20] = {0};
+
 
 void http_post_data_callback (char *buf, int len)
 {
-    // ssid/pass
-    printf("%s\n", buf);
-    char *pt = strtok(buf,"/");
-    strcpy(wifiMode, pt);
-    printf("wifiMode: %s\n", pt);
-    pt = strtok(NULL,"/");
-    strcpy(ssid, pt);
-    printf("ssid: %s\n", pt);
-    pt = strtok(NULL,"/");
-    strcpy(password, pt);
-    printf("pass: %s\n", pt);
-    pt = strtok(NULL,"/");
-    strcpy(dhcp, pt);
-    printf("dhcp: %s\n", pt);
-    pt = strtok(NULL,"/");
-    strcpy(ipAddress, pt);
-    printf("IP: %s\n", pt);
-    pt = strtok(NULL,"/");
-    strcpy(subnetMask, pt);
-    printf("subnet Mask: %s\n", pt);
+    cJSON *json = cJSON_Parse(buf);
+    if (json == NULL) {
+        // Handle parsing error
+        printf("Error parsing JSON: %s\n", cJSON_GetErrorPtr());
+        return;
+    }
+
+    // Extract values from JSON
+    strcpy(wifiMode, cJSON_GetObjectItem(json, "wifiMode")->valuestring);
+    strcpy(dhcp, cJSON_GetObjectItem(json, "dhcp")->valuestring);
+
+    // Clean up cJSON object
+    
+
+    // Handle different configurations based on wifiMode and dhcp
+    if (strcmp(wifiMode, "ap") == 0) {
+        strcpy(apSsid, cJSON_GetObjectItem(json, "ssid")->valuestring);
+        strcpy(apPass, cJSON_GetObjectItem(json, "password")->valuestring);
+        printf("apSsid: %s\n", apSsid);
+        printf("apPass: %s\n", apPass);
+    } else if (strcmp(wifiMode, "station") == 0) {
+        strcpy(staSsid, cJSON_GetObjectItem(json, "ssid")->valuestring);
+        strcpy(staPass, cJSON_GetObjectItem(json, "password")->valuestring);
+        printf("staSsid: %s\n", staSsid);
+        printf("staPass: %s\n", staPass);
+
+        if (strcmp(dhcp, "false") == 0) {
+            strcpy(ipAddress, cJSON_GetObjectItem(json, "ipAddress")->valuestring);
+            strcpy(subnetMask, cJSON_GetObjectItem(json, "subnetMask")->valuestring);
+            strcpy(Gateway, cJSON_GetObjectItem(json, "gateway")->valuestring);
+            strcpy(DNS, cJSON_GetObjectItem(json, "dns")->valuestring);
+            printf("ipAddress: %s\n", ipAddress);
+            printf("subnetMask: %s\n", subnetMask);
+            printf("Gateway: %s\n", Gateway);
+            printf("DNS: %s\n", DNS);
+        }
+    }
+    cJSON_Delete(json);
     xEventGroupSetBits(s_wifi_event_group, HTTP_CONFIG_DONE);
 }
 
@@ -179,6 +228,7 @@ void app_config(void)
         }
         else if (provision_type == PROVISION_ACCESSPOINT)
         {
+            esp_wifi_restore();
             ap_start();
             start_webserver();
             http_post_set_callback(http_post_data_callback);
@@ -191,8 +241,8 @@ void app_config(void)
             bzero(&wifi_config, sizeof(wifi_config_t));
             if (strcmp(wifiMode, "station") == 0)
             {
-                memcpy(wifi_config.sta.ssid, ssid, strlen(ssid));
-                memcpy(wifi_config.sta.password, password, strlen(password));
+                memcpy(wifi_config.sta.ssid, staSsid, strlen(staSsid));
+                memcpy(wifi_config.sta.password, staPass, strlen(staPass));
                 wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
                 ESP_ERROR_CHECK(esp_wifi_init(&cfg));
                 ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
@@ -201,19 +251,63 @@ void app_config(void)
             }
             else if(strcmp(wifiMode, "ap") == 0)
             {
-                memcpy(wifi_config.sta.ssid, ssid, strlen(ssid));
-                memcpy(wifi_config.sta.password, password, strlen(password));
-                wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-                ESP_ERROR_CHECK(esp_wifi_init(&cfg));
+                memcpy(wifi_config.ap.ssid, apSsid, strlen(apSsid));
+                memcpy(wifi_config.ap.password, apPass, strlen(apPass));
+                wifi_config.ap.max_connection = 4;
+                wifi_config.ap.channel = 1;
+                wifi_config.ap.authmode = WIFI_AUTH_WPA_WPA2_PSK;
+                ESP_LOGE("TAG", "Max connection is %d", wifi_config.ap.max_connection);
                 ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
                 ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &wifi_config));
                 ESP_ERROR_CHECK(esp_wifi_start());
+                start_webserver();
             }
         }
     }
     else
     {
         ESP_ERROR_CHECK(esp_wifi_start());
+        tcpip_adapter_ip_info_t ip_info;
+
+        // Get the IP address of the STA interface
+        esp_err_t ret = tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &ip_info);
+        if (ret == ESP_OK) {
+            // Print or use the IP address
+            printf("STA IP Address: %s\n", ip4addr_ntoa(&ip_info.ip));
+        } else {
+            printf("Failed to get STA IP address\n");
+        }
+        start_webserver();
+        http_post_set_callback(http_post_data_callback);
+        xEventGroupWaitBits(s_wifi_event_group , HTTP_CONFIG_DONE, false, true, portMAX_DELAY); 
+        // convert station mode and connect router
+        stop_webserver();
+
+        wifi_config_t wifi_config;
+        bzero(&wifi_config, sizeof(wifi_config_t));
+        if (strcmp(wifiMode, "station") == 0)
+        {
+            memcpy(wifi_config.sta.ssid, staSsid, strlen(staSsid));
+            memcpy(wifi_config.sta.password, staPass, strlen(staPass));
+            wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+            ESP_ERROR_CHECK(esp_wifi_init(&cfg));
+            ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
+            ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
+            ESP_ERROR_CHECK(esp_wifi_start());
+        }
+        else if(strcmp(wifiMode, "ap") == 0)
+        {
+            memcpy(wifi_config.ap.ssid, apSsid, strlen(apSsid));
+            memcpy(wifi_config.ap.password, apPass, strlen(apPass));
+            wifi_config.ap.max_connection = 4;
+            wifi_config.ap.channel = 1;
+            wifi_config.ap.authmode = WIFI_AUTH_WPA_WPA2_PSK;
+            ESP_LOGE("TAG", "Max connection is %d", wifi_config.ap.max_connection);
+            ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
+            ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &wifi_config));
+            ESP_ERROR_CHECK(esp_wifi_start());
+            start_webserver();
+        }
     }
     xEventGroupWaitBits(s_wifi_event_group , WIFI_CONNECTED_BIT, false, true, portMAX_DELAY); 
     ESP_LOGI(TAG, "wifi connected");

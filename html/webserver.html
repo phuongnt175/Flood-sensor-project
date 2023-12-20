@@ -130,37 +130,37 @@
     <div id="tab1" class="tab-content">
         <h2>System Status</h2><hr>
         <div class="flex-container2">
-            <p><strong>Module MAC:</strong> <span class="device-info" id="mac-address">..........</span></p>
+            <p><strong>Module MAC:</strong> <span class="device-info" id="t1-mac-address">..........</span></p>
         </div>
         <div class="flex-container2">
-            <p><strong>Module Version:</strong> <span class="device-info" id="module-version">..........</span></p>
+            <p><strong>Module Version:</strong> <span class="device-info" id="t1-module-version">..........</span></p>
         </div>
         <h2>WiFi Status</h2><hr>
         <div class="flex-container2">
-            <p><strong>WiFi Mode:</strong> <span class="device-info" id="wifi-mode">..........</span></p>
+            <p><strong>WiFi Mode:</strong> <span class="device-info" id="t1-wifi-mode">..........</span></p>
         </div>
         <h2>AP Status</h2><hr>
         <div class="flex-container2">
-            <p><strong>AP SSID:</strong> <span class="device-info" id="ap-ssid">..........</span></p>
+            <p><strong>AP SSID:</strong> <span class="device-info" id="t1-ap-ssid">..........</span></p>
         </div>
         <div class="flex-container2">
-            <p><strong>AP IP:</strong> <span class="device-info" id="ap-ip">..........</span></p>
+            <p><strong>AP IP:</strong> <span class="device-info" id="t1-ap-ip">..........</span></p>
         </div>
         <h2>Station Status</h2><hr>
         <div class="flex-container2">
-            <p><strong>Station DHCP:</strong> <span class="device-info" id="sta-status">..........</span></p>
+            <p><strong>Station DHCP:</strong> <span class="device-info" id="t1-sta-status">..........</span></p>
         </div>
         <div class="flex-container2">
-            <p><strong>Station IP:</strong> <span class="device-info" id="sta-ip">..........</span></p>
+            <p><strong>Station IP:</strong> <span class="device-info" id="t1-sta-ip">..........</span></p>
         </div>
         <div class="flex-container2">
-            <p><strong>Station Subnet Mask:</strong> <span class="device-info" id="sta-submask">..........</span></p>
+            <p><strong>Station Subnet Mask:</strong> <span class="device-info" id="t1-sta-submask">..........</span></p>
         </div>
         <div class="flex-container2">
-            <p><strong>Station Gateway:</strong> <span class="device-info" id="sta-gateway">..........</span></p>
+            <p><strong>Station Gateway:</strong> <span class="device-info" id="t1-sta-gateway">..........</span></p>
         </div>
         <div class="flex-container2">
-            <p><strong>Station DNS:</strong> <span class="device-info" id="sta-dns">..........</span></p>
+            <p><strong>Station DNS:</strong> <span class="device-info" id="t1-sta-dns">..........</span></p>
         </div>
     </div> 
 
@@ -170,7 +170,7 @@
             <!-- Flex container for label and select elements with margin-bottom -->
             <div class="flex-container">
                 <label for="wifiMode">Wi-Fi Role:</label>
-                <select id="wifiMode" name="wifiMode">
+                <select id="t2-wifiMode" name="wifiMode">
                     <option value="ap">Access Point (AP)</option>
                     <option value="station">Station</option>
                 </select>
@@ -180,43 +180,43 @@
             <!-- Flex container for label and input elements with margin-bottom -->
             <div class="flex-container">
                 <label for="ssid">SSID:</label>
-                <input type="text" id="ap-ssid" name="ssid" placeholder=" ">
+                <input type="text" id="t2-ap-ssid" name="tap-ssid" placeholder=" ">
             </div>
             <div class="flex-container">
                 <label for="password">Password:</label>
-                <input type="password" id="ap-pass" name="ap-pass" placeholder=" ">
+                <input type="password" id="t2-ap-pass" name="ap-pass" placeholder=" ">
             </div>
             <h2>Station Set</h2><hr>
             <div class="flex-container">
                 <label for="ssid">SSID:</label>
-                <input type="text" id="sta-ssid" name="sta-ssid" placeholder=" ">
+                <input type="text" id="t2-sta-ssid" name="sta-ssid" placeholder=" ">
             </div>
             <div class="flex-container">
-                <label for="ssid">Password:</label>
-                <input type="password" id="sta-pass" name="sta-pass" placeholder=" ">
+                <label for="password">Password:</label>
+                <input type="password" id="t2-sta-pass" name="sta-pass" placeholder=" ">
             </div>
             <div class="flex-container">
                 <label for="dhcp">Use DHCP:</label>
-                <select id="dhcp" name="dhcp">
+                <select id="t2-dhcp" name="dhcp">
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                 </select>
             </div>
             <div class="flex-container">
                 <label for="ipAddress">IP Address:</label>
-                <input type="text" id="ipAddress" name="ipAddress" placeholder=" ">
+                <input type="text" id="t2-ipAddress" name="ipAddress" placeholder=" ">
             </div>
             <div class="flex-container">
                 <label for="subnetMask">Subnet Mask:</label>
-                <input type="text" id="subnetMask" name="subnetMask" placeholder=" ">
+                <input type="text" id="t2-subnetMask" name="subnetMask" placeholder=" ">
             </div>
             <div class="flex-container">
                 <label for="Gateway">Gateway:</label>
-                <input type="text" id="Gateway" name="Gateway" placeholder=" ">
+                <input type="text" id="t2-Gateway" name="Gateway" placeholder=" ">
             </div>
             <div class="flex-container">
                 <label for="DNS">DNS:</label>
-                <input type="text" id="DNS" name="DNS" placeholder=" "> 
+                <input type="text" id="t2-DNS" name="DNS" placeholder=" "> 
             </div>
             <button type="submit">SAVE</button>
         </form>
@@ -255,70 +255,117 @@
         var xhttp2 = new XMLHttpRequest();
 
         document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('config-form');
+    const form = document.getElementById('config-form');
 
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
 
-                var wifiMode = document.getElementById('wifiMode').value;
-                var apSsid = document.getElementById('ap-ssid').value;
-                var apPass = document.getElementById('ap-pass').value;
-                var staSsid = document.getElementById('sta-ssid').value;
-                var staPass = document.getElementById('sta-pass').value;
-                var dhcp = document.getElementById('dhcp').value;
-                var ipAddress = document.getElementById('ipAddress').value;
-                var subnetMask = document.getElementById('subnetMask').value;
-                var Gateway = document.getElementById('Gateway').value;
-                var DNS = document.getElementById('DNS').value;
-                var data = wifiMode + "/" + apSsid + "/" + apPass + "/" + staSsid + "/" + staPass + "/" + dhcp + "/" + ipAddress + "/" + subnetMask + "/" + Gateway + "/" + DNS;
+        var wifiMode = document.getElementById('t2-wifiMode').value;
+        var dhcp = document.getElementById('t2-dhcp').value;
 
-                xhttp1.open("POST", "/post", true);
-                xhttp1.send(data);
-            });
-        });
+        // // Create an object to hold the form data
+        // var wifiMode = document.getElementById('t2-wifiMode').value;
+        // var apSsid = document.getElementById('t2-ap-ssid').value;
+        // var apPass = document.getElementById('t2-ap-pass').value;
+        // var staSsid = document.getElementById('t2-sta-ssid').value;
+        // var staPass = document.getElementById('t2-sta-pass').value;
+        // var dhcp = document.getElementById('t2-dhcp').value;
+        // var ipAddress = document.getElementById('t2-ipAddress').value;
+        // var subnetMask = document.getElementById('t2-subnetMask').value;
+        // var Gateway = document.getElementById('t2-Gateway').value;
+        // var DNS = document.getElementById('t2-DNS').value;
+
+        var formAP = {
+            wifiMode: document.getElementById('t2-wifiMode').value,
+            dhcp: document.getElementById('t2-dhcp').value,
+            ssid: document.getElementById('t2-ap-ssid').value,
+            password: document.getElementById('t2-ap-pass').value
+        }
+        
+        var formSTA = {
+            wifiMode: document.getElementById('t2-wifiMode').value,
+            dhcp: document.getElementById('t2-dhcp').value,
+            ssid: document.getElementById('t2-sta-ssid').value,
+            password: document.getElementById('t2-sta-pass').value
+        }
+
+        var formDHCP = {
+            wifiMode: document.getElementById('t2-wifiMode').value,
+            dhcp: document.getElementById('t2-dhcp').value,
+            ssid: document.getElementById('t2-sta-ssid').value,
+            password: document.getElementById('t2-sta-pass').value,
+            ipAddress: document.getElementById('t2-ipAddress').value,
+            subnetMask: document.getElementById('t2-subnetMask').value,
+            gateway: document.getElementById('t2-Gateway').value,
+            dns: document.getElementById('t2-DNS').value
+
+        }
+
+        if(wifiMode == 'ap')
+        {
+            var data = JSON.stringify(formAP);
+        }
+        else if(wifiMode == 'station')
+        {
+            if(dhcp == 'true')
+            {
+                var data = JSON.stringify(formSTA);
+            }
+            else if(dhcp == 'false')
+            {
+                var data = JSON.stringify(formDHCP);
+            }
+        }
+
+        xhttp1.open("POST", "/post", true);
+        xhttp1.setRequestHeader('Content-Type', 'application/json');
+        xhttp1.send(data);
+    });
+});
+
 
         xhttp2.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 const responseObj = JSON.parse(this.responseText);
             
                 // Update MAC Address
-                const macAddressElement = document.getElementById("mac-address");
+                const macAddressElement = document.getElementById("t1-mac-address");
                 macAddressElement.innerText = responseObj.macAddress;
 
                 // Update Module Version
-                const moduleVersionElement = document.getElementById("module-version");
+                const moduleVersionElement = document.getElementById("t1-module-version");
                 moduleVersionElement.innerText = responseObj.moduleVersion;
 
                 // Update WiFi Mode
-                const wifiModeElement = document.getElementById("wifi-mode");
+                const wifiModeElement = document.getElementById("t1-wifi-mode");
                 wifiModeElement.innerText = responseObj.wifiMode;
 
                 // Update AP SSID
-                const apSsidElement = document.getElementById("ap-ssid");
+                const apSsidElement = document.getElementById("t1-ap-ssid");
                 apSsidElement.innerText = responseObj.apSsid;
 
                 // Update AP IP
-                const apIpElement = document.getElementById("ap-ip");
+                const apIpElement = document.getElementById("t1-ap-ip");
                 apIpElement.innerText = responseObj.apIp;
 
                 // Update station DHCP status
-                const staDHCPElement = document.getElementById("sta-status");
+                const staDHCPElement = document.getElementById("t1-sta-status");
                 staDHCPElement.innerText = responseObj.staDHCP;
 
                 // Update station IP
-                const staIpElement = document.getElementById("sta-ip");
+                const staIpElement = document.getElementById("t1-sta-ip");
                 staIpElement.innerText = responseObj.staIp;
 
                 // Update station SubnetMask
-                const staSubMaskElement = document.getElementById("sta-submask");
+                const staSubMaskElement = document.getElementById("t1-sta-submask");
                 staSubMaskElement.innerText = responseObj.staSubMask;
 
                 // Update AP IP
-                const staGatewayElement = document.getElementById("sta-gateway");
+                const staGatewayElement = document.getElementById("t1-sta-gateway");
                 staGatewayElement.innerText = responseObj.staGateway;
 
                 // Update AP IP
-                const staDNSElement = document.getElementById("sta-dns");
+                const staDNSElement = document.getElementById("t1-sta-dns");
                 staDNSElement.innerText = responseObj.staDNS;
             }
         };
