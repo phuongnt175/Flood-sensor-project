@@ -19,7 +19,7 @@
             padding: 0;
             box-sizing: border-box;
             display: flex;
-            height: 100vh;
+            height: auto;
         }
 
         .sidebar {
@@ -114,6 +114,20 @@
             font-weight: bold;
         }
 
+        resetButton {
+            background-color: white;
+            color: #3498db;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-left: center;
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
         button:hover {
             background-color: #45a049;
         }
@@ -146,6 +160,9 @@
         <div class="flex-container2">
             <p><strong>AP IP:</strong> <span class="device-info" id="t1-ap-ip">..........</span></p>
         </div>
+        <div class="flex-container2">
+            <p><strong>AP Channel:</strong> <span class="device-info" id="t1-ap-chan">..........</span></p>
+        </div>
         <h2>Station Status</h2><hr>
         <div class="flex-container2">
             <p><strong>Station DHCP:</strong> <span class="device-info" id="t1-sta-status">..........</span></p>
@@ -171,37 +188,68 @@
             <div class="flex-container">
                 <label for="wifiMode">Wi-Fi Role:</label>
                 <select id="t2-wifiMode" name="wifiMode">
+                    <option value = "select"> ---Select--- </option>
                     <option value="ap">Access Point (AP)</option>
                     <option value="station">Station</option>
                 </select>
             </div>
-
+        <section id = "apsection" style="display: none;">
             <h2>AP Set</h2><hr>
             <!-- Flex container for label and input elements with margin-bottom -->
             <div class="flex-container">
                 <label for="ssid">SSID:</label>
-                <input type="text" id="t2-ap-ssid" name="tap-ssid" placeholder=" ">
+                <input type="text" id="t2-ap-ssid" name="ap-ssid" placeholder=" ">
             </div>
+            <div class="flex-container">
+                <label for="secure">Security type:</label>
+                <select id="t2-ap-secure" name="ap-secure">
+                    <option value = "select"> ---Select--- </option>
+                    <option value="open">OPEN</option>
+                    <option value="wpa2">WPA2</option>
+                </select>
+            </div>
+            <section id = "apPassSection" style="display: none;">
             <div class="flex-container">
                 <label for="password">Password:</label>
                 <input type="password" id="t2-ap-pass" name="ap-pass" placeholder=" ">
             </div>
+            </section>
+            <div class="flex-container">
+                <label for="channel">Channel:</label>
+                <input type="channel" id="t2-ap-chan" name="ap-chan" placeholder=" ">
+            </div>
+        </section>
+        <section id = "stationsection" style="display: none;">
             <h2>Station Set</h2><hr>
             <div class="flex-container">
                 <label for="ssid">SSID:</label>
                 <input type="text" id="t2-sta-ssid" name="sta-ssid" placeholder=" ">
             </div>
+            
+            <div class="flex-container">
+                <label for="secure">Security type:</label>
+                <select id="t2-sta-secure" name="ap-secure">
+                    <option value ="select"> ---Select--- </option>
+                    <option value="open">OPEN</option>
+                    <option value="wpa2">WPA2</option>
+                </select>
+            </div>
+            
+            <section id = "staPassSection" style="display: none;">
             <div class="flex-container">
                 <label for="password">Password:</label>
                 <input type="password" id="t2-sta-pass" name="sta-pass" placeholder=" ">
             </div>
+            </section>
             <div class="flex-container">
                 <label for="dhcp">Use DHCP:</label>
                 <select id="t2-dhcp" name="dhcp">
+                    <option value ="select"> ---Select--- </option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                 </select>
             </div>
+            <section id = "DhcpSection" style="display: none;">
             <div class="flex-container">
                 <label for="ipAddress">IP Address:</label>
                 <input type="text" id="t2-ipAddress" name="ipAddress" placeholder=" ">
@@ -218,6 +266,8 @@
                 <label for="DNS">DNS:</label>
                 <input type="text" id="t2-DNS" name="DNS" placeholder=" "> 
             </div>
+            </section>
+        </section>
             <button type="submit">SAVE</button>
         </form>
     </div>
@@ -226,9 +276,14 @@
         <!-- Content for Tab 3 -->
         <p>After reloading factory settings, all user's configurations will become default.</p>
         <p>Reboot will restart the device, and any configuration will take effect afterward.</p>
+
+        <form action="/restart" method="post">
+            <button id="restartButton" onclick="restartESP()">Restart</button>
+        </form> 
     </div>
 
     <script>
+    
         function showTab(tabId) {
             const tabs = document.querySelectorAll('.tab-content');
             const tabButtons = document.querySelectorAll('.tab');
@@ -249,12 +304,84 @@
                 }
             });
         }
+
+        function restartESP() {
+        // Make an asynchronous request to the ESP32
+        var xhttp3 = new XMLHttpRequest();
+        xhttp3.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Upon successful response, initiate a page reload
+                location.reload(true);
+            }
+        };
+
+        xhttp3.open("POST", "/restart", true);
+        xhttp3.send();
+    }
         
 
         var xhttp1 = new XMLHttpRequest();
         var xhttp2 = new XMLHttpRequest();
 
         document.addEventListener('DOMContentLoaded', function () {
+            
+            const wifiRoleSelect = document.getElementById("t2-wifiMode");
+            const apSection = document.getElementById("apsection");
+            const stationSection = document.getElementById("stationsection");
+            const secureAP = document.getElementById("t2-ap-secure");
+            const secureSTA = document.getElementById("t2-sta-secure");
+            const apPassSection = document.getElementById("apPassSection");
+            const staPassSection = document.getElementById("staPassSection");
+            const dhcpSelect = document.getElementById("t2-dhcp");
+            const dhcpSection = document.getElementById("DhcpSection");
+            
+            
+            secureAP.addEventListener('change', (event) => {
+                if (secureAP.value === "wpa2") {
+                    // If AP is selected, show AP section and hide Station section
+                    apPassSection.style.display = "block";
+                } else if (secureAP.value === "open") {
+                    // If Station is selected, show Station section and hide AP section
+                    apPassSection.style.display = "none";
+                }
+            });
+            
+            secureSTA.addEventListener('change', (event) => {
+                if (secureSTA.value === "wpa2") {
+                    // If AP is selected, show AP section and hide Station section
+                    staPassSection.style.display = "block";
+                } else if (secureSTA.value === "open") {
+                    // If Station is selected, show Station section and hide AP section
+                    staPassSection.style.display = "none";
+                }
+            });
+            
+            dhcpSelect.addEventListener('change', (event) => {
+                if (dhcpSelect.value === "true") {
+                    // If AP is selected, show AP section and hide Station section
+                    DhcpSection.style.display = "none";
+                } else if (dhcpSelect.value === "false") {
+                    // If Station is selected, show Station section and hide AP section
+                    DhcpSection.style.display = "block";
+                }
+            });
+
+            wifiRoleSelect.addEventListener('change', (event) => {
+                if (wifiRoleSelect.value === "ap") {
+                    // If AP is selected, show AP section and hide Station section
+                    apSection.style.display = "block";
+                    stationSection.style.display = "none";
+                } else if (wifiRoleSelect.value === "station") {
+                    // If Station is selected, show Station section and hide AP section
+                    apSection.style.display = "none";
+                    stationSection.style.display = "block";
+                }
+                else{
+                    apSection.style.display = "none";
+                    stationSection.style.display = "none";
+                }
+            });
+            
     const form = document.getElementById('config-form');
 
     form.addEventListener('submit', function (event) {
@@ -263,23 +390,12 @@
         var wifiMode = document.getElementById('t2-wifiMode').value;
         var dhcp = document.getElementById('t2-dhcp').value;
 
-        // // Create an object to hold the form data
-        // var wifiMode = document.getElementById('t2-wifiMode').value;
-        // var apSsid = document.getElementById('t2-ap-ssid').value;
-        // var apPass = document.getElementById('t2-ap-pass').value;
-        // var staSsid = document.getElementById('t2-sta-ssid').value;
-        // var staPass = document.getElementById('t2-sta-pass').value;
-        // var dhcp = document.getElementById('t2-dhcp').value;
-        // var ipAddress = document.getElementById('t2-ipAddress').value;
-        // var subnetMask = document.getElementById('t2-subnetMask').value;
-        // var Gateway = document.getElementById('t2-Gateway').value;
-        // var DNS = document.getElementById('t2-DNS').value;
-
         var formAP = {
             wifiMode: document.getElementById('t2-wifiMode').value,
             dhcp: document.getElementById('t2-dhcp').value,
             ssid: document.getElementById('t2-ap-ssid').value,
-            password: document.getElementById('t2-ap-pass').value
+            password: document.getElementById('t2-ap-pass').value,
+            channel: document.getElementById('t2-ap-chan').value
         }
         
         var formSTA = {
@@ -320,6 +436,7 @@
         xhttp1.open("POST", "/post", true);
         xhttp1.setRequestHeader('Content-Type', 'application/json');
         xhttp1.send(data);
+        showAlert();
     });
 });
 
@@ -348,6 +465,10 @@
                 const apIpElement = document.getElementById("t1-ap-ip");
                 apIpElement.innerText = responseObj.apIp;
 
+                //update AP Channel
+                const apChanElement = document.getElementById("t1-ap-chan");
+                apChanElement.innerText = responseObj.apChan;
+
                 // Update station DHCP status
                 const staDHCPElement = document.getElementById("t1-sta-status");
                 staDHCPElement.innerText = responseObj.staDHCP;
@@ -374,6 +495,13 @@
             xhttp2.open("GET", "/sysinfo", true);
             xhttp2.send();
         }, 1000); // Adjust the interval as needed
+
+        // Function to show the alert and remove the button
+        function showAlert() {
+            alert("parameter saved successfully and will take effect after restart!");
+            var button = document.getElementById('showAlertButton');
+            button.parentNode.removeChild(button);
+        }
     </script>
 </body>
 

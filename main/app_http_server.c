@@ -40,13 +40,14 @@ static esp_err_t sys_info_handler(httpd_req_t *req)
         wifi_config_t ap_config;
         esp_wifi_get_config(WIFI_IF_AP, &ap_config);
         snprintf(deviceInfo.apSsid, sizeof(deviceInfo.apSsid), "%s", (char *)ap_config.ap.ssid);
+        snprintf(deviceInfo.apChan, sizeof(deviceInfo.apChan), "%d", ap_config.ap.channel);
         tcpip_adapter_ip_info_t ap_ip_info;
         tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_AP, &ap_ip_info);
         snprintf(deviceInfo.apIp, sizeof(deviceInfo.apIp), IPSTR, IP2STR(&ap_ip_info.ip));
     }
 
     // Create JSON response
-    char json_response[1024];
+    char json_response[2048];
     snprintf(json_response, sizeof(json_response),
              "{"
              "\"macAddress\":\"%s\","
@@ -54,6 +55,7 @@ static esp_err_t sys_info_handler(httpd_req_t *req)
              "\"wifiMode\":\"%s\","
              "\"apSsid\":\"%s\","
              "\"apIp\":\"%s\","
+             "\"apChan\":\"%s\","
              "\"staDHCP\":\"%s\","
              "\"staIp\":\"%s\","
              "\"staSubMask\":\"%s\","
@@ -61,7 +63,7 @@ static esp_err_t sys_info_handler(httpd_req_t *req)
              "\"staDNS\":\"%s\""
              "}",
              deviceInfo.macAddress, deviceInfo.moduleVersion, deviceInfo.wifiMode,
-             deviceInfo.apSsid, deviceInfo.apIp, deviceInfo.staDHCP, deviceInfo.staIP
+             deviceInfo.apSsid, deviceInfo.apIp, deviceInfo.apChan, deviceInfo.staDHCP, deviceInfo.staIP
              , deviceInfo.staSubMask, deviceInfo.staGateway,deviceInfo.staDNS);
 
     httpd_resp_set_type(req, "application/json");
@@ -97,6 +99,23 @@ static const httpd_uri_t root = {
     /* Let's pass response string in user
      * context to demonstrate it's usage */
     .user_ctx = "Hello World!"};
+
+static esp_err_t restart_handler(httpd_req_t *req) {
+    ESP_LOGI(TAG, "restart handler enter");
+    httpd_resp_send(req, "Restarting ESP32", HTTPD_RESP_USE_STRLEN);
+
+    // Delay to allow the response to be sent before restarting
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    esp_restart();
+    return ESP_OK;
+}
+
+static const httpd_uri_t restart_uri = {
+    .uri       = "/restart",
+    .method    = HTTP_POST,
+    .handler   = restart_handler,
+    .user_ctx  = NULL
+};
 
 /* An HTTP POST handler */
 static esp_err_t http_post_handler(httpd_req_t *req)
@@ -134,6 +153,7 @@ void start_webserver(void)
         httpd_register_uri_handler(server, &root);
         httpd_register_uri_handler(server, &http_post);
         httpd_register_uri_handler(server, &sys_info);
+        httpd_register_uri_handler(server, &restart_uri);
     }
 }
 

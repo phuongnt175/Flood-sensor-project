@@ -7,6 +7,7 @@ typedef struct {
     char wifiMode[10];
     char apSsid[32];
     char apIp[16];
+    char apChan[10];
     char staDHCP[16];
     char staIP[16];
     char staSubMask[20];
